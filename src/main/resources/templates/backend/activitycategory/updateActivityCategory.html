@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<base th:href="@{/}">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>活動類別管理系統</title>
+	<link th:insert="~{/backend/htmlfile/css.html}"/>
+
+	<style type="text/css">
+		/* 活動類別表單容器 */
+		.update {
+			max-width: auto;
+			margin: 20px auto;
+			background-color: #fff;
+			border-radius: 8px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			padding: 10px;
+			width: 50%;
+		}
+		
+		/* 標題樣式 */
+		.update h4 {
+			font-size: 20px;
+			margin-bottom: 10px;
+			text-align: center;
+		}
+		
+		/* 表單元素樣式 */
+		.update form {
+			width: 80%;
+			max-width: 500px;
+			margin: auto;
+		}
+		
+		/* 表單中的文本框和文本區域 */
+		.update form input[type="text"], .update form textarea {
+			width: 100%;
+			padding: 8px;
+			margin-bottom: 10px;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			box-sizing: border-box;
+		}
+		
+		/* 錯誤訊息樣式 */
+		.error {
+			color: red;
+			font-size: 12px;
+		}
+		
+		#submit_btn, #cancel_btn {
+			padding: 5px 10px;
+			background-color: #9cb6d2;
+			color: #fff;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			white-space: nowrap; /* 讓文字不換行 */
+			margin-top: 10px; /* 設定向下的上邊距 */
+			text-decoration: none; /* 取消連結的下劃線 */
+		}
+		
+		#submit, #cancel_btn {
+			display: inline-block;
+		}
+		
+		#submit_btn:hover, #cancel_btn:hover {
+			background-color: #0056b3; /* 滑鼠指向某一行時，這行的背景顏色會改變。 */
+		}
+		
+		#btn_set {
+			text-align: right; /* 讓內容向右對齊 */
+			margin-top: 10px; /* 這是為了確保與表格之間有一些間距 */
+		}
+	</style>
+
+</head>
+<body>
+	<th:block th:insert="~{/backend/htmlfile/content1}"/>
+    	<div class="container-fluid pt-4 px-4">
+        <div class="bg-light rounded">
+		<div class="G3_content">
+			<section class="update">
+				<h4>修改活動類別</h4>
+				<form th:action="@{/activitycategory/update}" method="post" th:object="${activityCategoryVO}" enctype="multipart/form-data">
+					<div>
+						<label>活動類別編號</label><br>
+						<input type="text" th:field="*{activityCategoryID}" readonly>
+					</div>
+					
+					<div>
+						<label>活動類別名稱</label>
+						<span  th:if="${#fields.hasErrors('activityCategoryName')}" th:errors="*{activityCategoryName}" class="error" id="activityCategoryName.errors"></span><br>
+						<input type="text" th:field="*{activityCategoryName}" onclick="hideContent('activityCategoryName.errors');" />
+					</div>
+					
+					<div>
+						<label>活動類別說明</label><br>
+						<textarea th:field="*{activityCategoryInfo}"></textarea>
+					</div>
+					
+					<div id="btn_set">
+						<div id="submit">
+							<button type="submit" id="submit_btn"> 修改 </button>
+						</div>
+						
+						<a th:href="@{/activitycategory/activitycategory}" id="cancel_btn">取消</a>
+					</div>
+				</form>
+			</section>
+	    </div>
+	    </div>
+	    </div>
+	<th:block th:insert="~{/backend/htmlfile/content2}"/>
+    <th:block th:insert="~{/backend/htmlfile/script}"/>
+	
+	<script>
+		//清除提示信息
+		function hideContent(d) {
+		     document.getElementById(d).style.display = "none";
+		}
+	</script>
+
+</body>
+</html>

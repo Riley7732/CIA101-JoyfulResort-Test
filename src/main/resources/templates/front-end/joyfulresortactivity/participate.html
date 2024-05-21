@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<base th:href="@{/}">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>活動報名</title>
+	<link th:insert="~{/front-end/htmlfile/css.html}" />
+
+	<style type="text/css">
+		/* 活動類別表單容器 */
+		.insert {
+			max-width: auto;
+			margin: 20px auto;
+			background-color: #fff;
+			border-radius: 8px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			padding: 10px;
+			width: 50%;
+		}
+		
+		/* 標題樣式 */
+		.insert h4 {
+			font-size: 20px;
+			margin-bottom: 10px;
+			text-align: center;
+		}
+		
+		/* 表單元素樣式 */
+		.insert form {
+			width: 80%;
+			max-width: 500px;
+			margin: auto;
+		}
+		
+		/* 表單中的文本框和文本區域 */
+		.insert form input[type="text"], .insert form textarea {
+			width: 100%;
+			padding: 8px;
+			margin-bottom: 10px;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			box-sizing: border-box;
+		}
+		
+		/* 錯誤訊息樣式 */
+		.error {
+			color: red;
+			font-size: 12px;
+		}
+		
+		#submit_btn, #cancel_btn {
+			padding: 5px 10px;
+			background-color: #9cb6d2;
+			color: #fff;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			white-space: nowrap; /* 讓文字不換行 */
+			margin-top: 10px; /* 設定向下的上邊距 */
+			text-decoration: none; /* 取消連結的下劃線 */
+		}
+		
+		#submit, #cancel_btn {
+			display: inline-block;
+		}
+		
+		#submit_btn:hover, #cancel_btn:hover {
+			background-color: #0056b3; /* 滑鼠指向某一行時，這行的背景顏色會改變。 */
+		}
+		
+		#btn_set {
+			text-align: right; /* 讓內容向右對齊 */
+			margin-top: 10px; /* 這是為了確保與表格之間有一些間距 */
+		}
+	</style>
+
+</head>
+<body>
+	<th:block link th:insert="~{/front-end/htmlfile/content1.html}" />
+    	<div class="container-fluid pt-4 px-4">
+        <div class="bg-light rounded">
+		<div class="G3_content">
+			<section class="insert">
+				<h4>活動報名</h4>
+				<form th:action="@{/activityorder/insert}" method="post" th:object="${activityOrderVO}" enctype="multipart/form-data">
+					<div class="errorblock" th:utext="${errorMessage}" style="color: red">${errorMessage}</div>
+
+					<div>
+						<label>選擇場次：</label><br>
+		    			<select th:field="*{activitySessionVO.activitySessionID}" id="activitySessionID">
+		    				<option value="">請選擇活動
+		    				<option th:if="${activitySessionVO.activityEnteredStatus == 1}" th:each="activitySessionVO : ${activitySessionListData}" th:value="${activitySessionVO.activitySessionID}" th:text="${activitySessionVO.activitySessionID + ' - ' + activitySessionVO.activityVO.activityName + ' - ' + activitySessionVO.activityDate}" />
+		    			</select><br>
+		    			<!-- <span>報名人數剩 <input id="leftTotal"> 人</span> -->
+						<span id="leftTotalSpan">(報名人數剩 <span id="leftTotal"></span> 人)</span>
+	    			</div>
+					
+					<div>
+						<label>活動報名人數</label>
+						<span th:if="${#fields.hasErrors('enteredNumber')}" th:errors="*{enteredNumber}" class="error" id="enteredNumber.errors"></span><br>
+						<select th:field="*{enteredNumber}" id="enteredNumber" onclick="hideContent('enteredNumber.errors');">
+						    <option value="">請選擇</option>
+						    <option th:each="num : ${#numbers.sequence(1,20)}" th:value="${num}" th:text="${num}"></option>
+						</select>
+					</div>
+					
+					<!-- <div>
+						<label>會員</label><br>
+						<input type="text" th:value="${member}" readonly>
+					</div> -->
+					
+					<div>
+						<label>訂單金額</label>
+						<span th:if="${#fields.hasErrors('orderAmount')}" th:errors="*{orderAmount}" class="error" id="orderAmount.errors"></span><br>
+						<input type="text" th:field="*{orderAmount}" id="orderAmount" readonly>
+					</div>
+					
+<!-- 					<div> -->
+<!-- 						<label>訂單狀態</label><br> -->
+<!-- 						<select  th:field="*{orderStatus}"> -->
+<!-- 							<option value="0">訂單成立</option> -->
+<!-- 							<option value="1">已付款</option> -->
+<!-- 							<option value="2">訂單取消中</option> -->
+<!-- 							<option value="3">已取消</option> -->
+<!-- 						</select> -->
+<!-- 					</div> -->
+					
+					<div>
+						<label>訂單日期</label><br>
+						<input type="text" th:value="${orderTime}" readonly>
+					</div>
+					
+					<div>
+						<label>訂單備註</label><br>
+						<textarea th:field="*{orderNote}"></textarea>
+					</div>
+					
+<!-- 					<div> -->
+<!-- 						<label>退款狀態</label><br> -->
+<!-- 						<select  th:field="*{refundStatus}"> -->
+<!-- 							<option value="0">無退款</option> -->
+<!-- 							<option value="1">退款中</option> -->
+<!-- 							<option value="2">完成退款</option> -->
+<!-- 						</select> -->
+<!-- 					</div> -->
+					
+					<div id="btn_set">
+						<div id="submit">
+							<button type="submit" id="submit_btn"> 報名 </button>
+						</div>
+						
+						<a th:href="@{/joyfulactivity}" id="cancel_btn">取消</a>
+					</div>
+				</form>
+			</section>
+	    </div>
+	    </div>
+	    </div>
+	<th:block link th:insert="~{/front-end/htmlfile/content2.html}" />
+	<th:block link th:insert="~{/front-end/htmlfile/script.html}" />
+	
+	<script th:src="@{/backend/js/jquery-3.4.1.min.js}"></script>
+	<script type="text/javascript">
+		//清除提示信息
+		function hideContent(d) {
+		     document.getElementById(d).style.display = "none";
+		}
+
+		
+		// 綁定change事件來獲得場次編號及報名人數，取得金額
+		$('#activitySessionID, #enteredNumber').change(function(){
+			
+			// 取得html取得場次編號
+			let asID = $('#activitySessionID').val();
+			console.log(asID);
+			//輸入報名人數取得enteredNumber值
+			let enteredNum = $('#enteredNumber').val();
+			console.log(enteredNum);
+			// 用AJAX把資料傳送到後端
+			$.post({
+			url:'/activityorder/getActivityPrice',
+			data:{
+				"activitySessionID" : asID,
+				"enteredNumber" : enteredNum
+			},
+			dataType:'json',
+			// 接收後端的資料
+			success:function(data){
+				console.log(data);
+				$('#orderAmount').val(data.activityPrice);
+			}
+			})
+		});
+
+		// 綁定change事件來獲得場次編號，取得剩餘報名人數
+		$('#activitySessionID').change(function(){
+
+			let asID = $('#activitySessionID').val();
+			console.log(asID);
+
+			$.post({
+			url:'/activityorder/getLeftTotal',
+			data:{
+				"activitySessionID" : asID
+			},
+			dataType:'json',
+			// 接收後端的資料
+			success:function(data){
+				console.log(data);
+// 				$('#leftTotal').val(data.leftTotal);
+				$('#leftTotal').text(data.leftTotal); // 更新 <span> 中的文字內容
+			}
+			})
+
+		});
+
+		
+	</script>
+
+</body>
+</html>

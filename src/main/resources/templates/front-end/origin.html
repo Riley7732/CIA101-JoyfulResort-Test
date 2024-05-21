@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<meta charset="UTF-8">
+<head>
+<!-- 基本設定 -->
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- 移動設備基本設定 -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="initial-scale=1, maximum-scale=1">
+<!-- 網站 Meta 資訊 -->
+<title>童樂渡假村 Joyful resort</title>
+<!-- 網站圖標 -->
+<link rel="icon" th:href="@{/frontend/images/fevicon.png}"
+	type="image/gif" />
+	
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="author" content="">
+<!-- 引入 Bootstrap CSS -->
+<link rel="stylesheet" th:href="@{/frontend/css/bootstrap.min.css}">
+<!-- 網站主要樣式表 -->
+<link rel="stylesheet" th:href="@{/frontend/css/style.css}">
+<link rel="stylesheet" th:href="@{/frontend/css/my.css}">
+<!-- 響應式樣式表 -->
+<link rel="stylesheet" th:href="@{/frontend/css/responsive.css}">
+<!-- 自定義滾動條樣式 -->
+<link rel="stylesheet"
+	th:href="@{/frontend/css/jquery.mCustomScrollbar.min.css}">
+<link rel="stylesheet"
+	href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
+	media="screen">
+
+<!-- 引入 Bootstrap 和 jQuery -->
+<link
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+	rel="stylesheet">
+
+
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+	crossorigin="anonymous">
+<!--        頁首連結用的 -->
+
+</head>
+
+<!-- body 主體 -->
+<body class="main-layout">
+
+	<!-- 頁面加載動畫 -->
+	<div class="loader_bg">
+		<div class="loader">
+			<img th:src="@{/frontend/images/loading.gif}" alt="#" />
+		</div>
+	</div>
+
+
+	<!-- 頁面頭部 -->
+	<header>
+		<!-- 頭部內容 -->
+		<div class="header">
+			<div class="container">
+				<div class="row">
+					<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col logo_section">
+						<div class="full">
+							<div class="center-desk">
+								<div class="logo">
+									<a href="index.html"> <img
+										th:src="@{/frontend/images/JOYFUL RESORT - MarkMaker Logo.png}"
+										alt="">
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
+						<nav class="navigation navbar navbar-expand-md navbar-dark ">
+							<button class="navbar-toggler" type="button"
+								data-toggle="collapse" data-target="#navbarsExample04"
+								aria-controls="navbarsExample04" aria-expanded="false"
+								aria-label="Toggle navigation">
+								<span class="navbar-toggler-icon"></span>
+							</button>
+							<div class="collapse navbar-collapse" id="navbarsExample04">
+								<ul class="navbar-nav mr-auto">
+									<li class="nav-item"><a class="nav-link active fw-bold"
+										href="index.html">首頁</a> <!-- 包含  最新消息 媒體報導...  --></li>
+									<li class="nav-item"><a class="nav-link fw-bold"
+										href="contact.html">關於我們</a></li>
+									<li class="nav-item"><a class="nav-link fw-bold"
+										href="room.html">飯店設施</a></li>
+									<li class="nav-item"><a class="nav-link fw-bold"
+										href="gallery.html">線上訂房</a></li>
+									<li class="nav-item"><a class="nav-link fw-bold"
+										href="blog.html">活動報名</a></li>
+									<li class="nav-item"><a class="nav-link fw-bold"
+										href="restaurant.html">餐飲服務</a></li>
+									<li class="nav-item"><a class="nav-link  fw-bold"
+										href="conference.html">宴會會議</a></li>
+									<li class="nav-item"><a class="nav-link fw-bold"
+										href="log.html">會員專區</a></li>
+								</ul>
+							</div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+	<!-- header結束 -->
+
+
+
+	<!-- 圖片跑馬燈 & 註解日期 -->
+	<section class="banner_main">
+		<div id="myCarousel" class="carousel slide banner"
+			data-ride="carousel" data-interval="3000">
+			<ol class="carousel-indicators">
+				<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+				<li data-target="#myCarousel" data-slide-to="1"></li>
+				<li data-target="#myCarousel" data-slide-to="2"></li>
+			</ol>
+			<div class="carousel-inner">
+				<div class="carousel-item active">
+					<img class="first-slide" th:src="@{/frontend/images/banner1.jpg}"
+						alt="First slide">
+					<div class="container"></div>
+				</div>
+				<div class="carousel-item">
+					<img class="second-slide" th:src="@{/frontend/images/banner2.jpg}"
+						alt="Second slide">
+				</div>
+				<div class="carousel-item">
+					<img class="third-slide" th:src="@{/frontend/images/banner3.jpg}"
+						alt="Third slide">
+				</div>
+			</div>
+			<a class="carousel-control-prev" href="#myCarousel" role="button"
+				data-slide="prev"> <span class="carousel-control-prev-icon"
+				aria-hidden="true"></span> <span class="sr-only">Previous</span>
+			</a> <a class="carousel-control-next" href="#myCarousel" role="button"
+				data-slide="next"> <span class="carousel-control-next-icon"
+				aria-hidden="true"></span> <span class="sr-only">Next</span>
+			</a>
+		</div>
+		<!-- <div class="booking_ocline">   -----------------------------------我是日期!!!
+            <div class="container">
+               <div class="row">
+                  <div class="col-md-5">
+                     <div class="book_room">
+                        <h1>Book a Room Online</h1>
+                        <form class="book_now">
+                           <div class="row">
+                              <div class="col-md-12">
+                                 <span>Arrival</span>
+                                 <img class="date_cua" src="images/date.png">
+                                 <input class="online_book" placeholder="dd/mm/yyyy" type="date" name="dd/mm/yyyy">
+                              </div>
+                              <div class="col-md-12">
+                                 <span>Departure</span>
+                                 <img class="date_cua" src="images/date.png">
+                                 <input class="online_book" placeholder="dd/mm/yyyy" type="date" name="dd/mm/yyyy">
+                              </div>
+                              <div class="col-md-12">
+                                 <button class="book_btn">立刻下訂</button>
+                              </div>
+                           </div>
+                        </form>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div> -->
+	</section>
+	<!-- 圖片跑馬燈結束 -->
+
+
+
+	<!-- 關於我們區域 -->
+	<div class="about">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-5">
+					<div class="titlepage">
+						<h2>最新消息</h2>
+						<p>123123123</p>
+						<a class="read_more" href=" ">觀看全文</a>
+					</div>
+				</div>
+				<div class="col-md-7">
+					<div class="about_img">
+						<figure>
+							<img th:src="@{/frontend/images/about.png}" alt="#" />
+						</figure>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 關於我們區域結束 -->
+
+	<!-- 最新消息 -->
+	<div class="news-section">
+		<div class="container">
+			<h2>最新消息</h2>
+			<!-- 新聞項目 -->
+			<div class="news-item">
+				<img th:src="@{/frontend/path-to-your-image.jpg}" alt="news image">
+				<div class="news-content">
+					<h3>新聞標題一</h3>
+					<p class="date">2024.04.15 - 2024.12.31</p>
+					<p>這裡是關於新聞標題一的簡要內容，點擊查看全文。</p>
+					<a href="link-to-full-article.html" class="read-more">觀看全文</a>
+				</div>
+			</div>
+			<!-- 更多新聞項目... -->
+		</div>
+	</div>
+
+	<!-- 媒體報導 -->
+	<div class="media-section">
+		<div class="container">
+			<h2>媒體報導</h2>
+			<!-- 媒體項目 -->
+			<div class="media-item">
+
+				<div class="media-content">
+					<h3>媒體標題一</h3>
+					<p class="date">2024.01.23 - 2024.12.31</p>
+					<p>這裡是關於媒體標題一的簡要內容，點擊查看全文。</p>
+					<a href="link-to-full-article.html" class="read-more">觀看全文</a>
+				</div>
+			</div>
+			<!-- 更多媒體項目... -->
+		</div>
+	</div>
+
+
+	<!-- 畫廊區域 -->
+	<!-- <div  class="gallery">
+         <div class="container">
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="titlepage">
+                     <h2>圖片預覽</h2>
+                  </div>
+               </div>
+            </div>
+            <div class="row">
+               <div class="col-md-3 col-sm-6">
+                  <div class="gallery_img">
+                     <figure><img src="images/gallery1.jpg" alt="#"/></figure>
+                  </div>
+               </div>
+               <div class="col-md-3 col-sm-6">
+                  <div class="gallery_img">
+                     <figure><img src="images/gallery2.jpg" alt="#"/></figure>
+                  </div>
+               </div>
+               <div class="col-md-3 col-sm-6">
+                  <div class="gallery_img">
+                     <figure><img src="images/gallery3.jpg" alt="#"/></figure>
+                  </div>
+               </div>
+               <div class="col-md-3 col-sm-6">
+                  <div class="gallery_img">
+                     <figure><img src="images/gallery4.jpg" alt="#"/></figure>
+                  </div>
+               </div>
+               <div class="col-md-3 col-sm-6">
+                  <div class="gallery_img">
+                     <figure><img src="images/gallery5.jpg" alt="#"/></figure>
+                  </div>
+               </div>
+               <div class="col-md-3 col-sm-6">
+                  <div class="gallery_img">
+                     <figure><img src="images/gallery6.jpg" alt="#"/></figure>
+                  </div>
+               </div>
+               <div class="col-md-3 col-sm-6">
+                  <div class="gallery_img">
+                     <figure><img src="images/gallery7.jpg" alt="#"/></figure>
+                  </div>
+               </div>
+               <div class="col-md-3 col-sm-6">
+                  <div class="gallery_img">
+                     <figure><img src="images/gallery8.jpg" alt="#"/></figure>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+       -->
+
+
+
+
+
+
+
+
+
+		<footer>
+	<div class="footer">
+			<div class="container">
+				<div class="row">
+					<!-- 聯絡資訊 -->
+					<div class="col-md-4">
+						<h3>關於我們</h3>
+						<ul class="conta">
+							<li><i class="fa fa-map-marker" aria-hidden="true"></i> 地址</li>
+							<li><i class="fa fa-mobile" aria-hidden="true"></i> 03
+								4501234</li>
+							<li><i class="fa fa-envelope" aria-hidden="true"></i><a
+								href="#"> Joyfulresort@gmail.com</a></li>
+						</ul>
+					</div>
+					<!-- 導航連結 -->
+					<div class="col-md-4">
+						<h3>目錄</h3>
+						<ul class="link_menu">
+							<li class="active"><a href="#">首頁</a></li>
+							<li><a href="about.html">關於我們</a></li>
+							<li><a href="room.html">房型</a></li>
+							<li><a href="gallery.html">導覽</a></li>
+							<li><a href="blog.html">報導</a></li>
+							<li><a href="contact.html">聯絡我們</a></li>
+						</ul>
+					</div>
+					<!-- 最新消息與社交媒體連結 -->
+					<div class="col-md-4">
+						<h3>最新消息</h3>
+						<form class="bottom_form">
+							<input class="enter" placeholder="電子郵件" type="text"
+								name="Enter your email">
+						</form>
+						<ul class="social_icon">
+							<li><a href="#"><i class="fa fa-facebook"
+									aria-hidden="true"></i></a></li>
+							<li><a href="#"><i class="fa fa-twitter"
+									aria-hidden="true"></i></a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<!-- 版權聲明 -->
+			<div class="copyright">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-10 offset-md-1">
+							<p>
+								© 2019 All Rights Reserved. Design by <a
+									href="https://html.design/">Free Html Templates</a><br>
+								<br>Distributed by <a href="https://themewagon.com/"
+									target="_blank">ThemeWagon</a>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
+	<!-- footer 結束 -->
+
+
+
+
+
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+	<script th:src="@{/frontend/js/jquery.min.js}"></script>
+	<script th:src="@{/frontend/js/bootstrap.bundle.min.js}"></script>
+	<!-- <script th:src="@{/js/jquery-3.0.0.min.js}"></script> -->
+	<!-- 側邊欄 -->
+	<script th:src="@{/frontend/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+	<script th:src="@{/frontend/js/custom.js}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<base th:href="@{/}">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>活動類別管理系統</title>
+	<link th:insert="~{/backend/htmlfile/css.html}"/>
+	
+	<style type="text/css">
+		body {
+            background-color: #f4f4f4;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        h4{
+        	margin: 1px;
+        }
+        section.query {
+            max-width: auto;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            overflow-x: auto;
+        }
+        section.info {
+            max-width: auto;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            overflow-x: auto;
+        }
+		table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0 auto; /* 將表格置中 */
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #9cb6d2;
+            font-weight: bold;
+            white-space: nowrap;
+            font-size: 16px;
+        }
+        tr {
+            background-color: #f9f9f9;
+            font-size: 14px;
+        }
+        tr:hover {
+            background-color: #f2f2f2;	/* 滑鼠指向某一行時，這行的背景顏色會改變。 */
+        }
+        #queryall_btn {
+            padding: 3px 5px;
+            background-color: #9cb6d2;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            white-space: nowrap;  /* 讓文字不換行 */
+            margin: 3px;	/* 設定向下的上邊距 */
+            text-decoration: none; /* 取消連結的下劃線 */
+        }
+        #queryone_btn, #add_btn {
+            padding: 3px 5px;
+            background-color: #9cb6d2;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            white-space: nowrap;  /* 讓文字不換行 */
+            /* margin-top: 10px; */	/* 設定向下的上邊距 */
+            text-decoration: none; /* 取消連結的下劃線 */
+        }
+        #queryall_btn:hover, #queryone_btn:hover, #add_btn:hover {
+		    background-color: #0056b3; /* 滑鼠指向某一行時，這行的背景顏色會改變。 */
+		}
+        #update_btn, #back_btn, #home_btn {
+            padding: 3px 5px;
+            background-color: #9cb6d2;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            white-space: nowrap;  /* 讓文字不換行 */
+            text-decoration: none; /* 取消連結的下劃線 */
+        }
+        #update_btn:hover, #back_btn:hover, #home_btn:hover {
+		    background-color: #0056b3;
+		}
+		div.back {
+			text-align: right; /* 讓內容向右對齊 */
+			 margin-top: 10px; /* 這是為了確保與表格之間有一些間距 */
+		}
+		div.home {
+			text-align: right; /* 讓內容向右對齊 */
+			/* margin-top: 10px; */ /* 這是為了確保與表格之間有一些間距 */
+		}
+	</style>
+</head>
+<body>
+	<th:block th:insert="~{/backend/htmlfile/content1}"/>
+    	<div class="container-fluid pt-4 px-4">
+        <div class="bg-light rounded">
+		<div class="G3_content">
+	    	<h2>活動類別管理系統</h2>
+	    	
+	    	<div class="home">
+					<a th:href="@{/main_page}" id="home_btn">回首頁</a>
+			</div>
+	    	
+	    	<section class="query">
+	    		<h4>查詢活動類別</h4>
+	    		
+	    		<!-- <form method="post" th:action="@{/activitycategory/listAll}">
+	    			<input type="submit" id="queryall_btn" value="查詢所有活動類別">
+	    		</form> -->
+	    		
+	    		<form method="post" th:action="@{/activitycategory/listOne}">
+	    			<label>選擇活動類別：</label>
+	    			<select name="activityCategoryID">
+	    				<option th:each="activityCategoryVO : ${activityCategoryListData}" th:value="${activityCategoryVO.activityCategoryID}" th:text="${activityCategoryVO.activityCategoryName}" />
+	    			</select>
+	    			<input type="submit" id="queryone_btn" value="查詢">
+	    		</form>
+	    		
+	    		<hr>
+	    		<h4>新增活動類別</h4>
+	    		<form method="post" th:action="@{/activitycategory/add}">
+	    			<input type="submit" id="add_btn" value="新增">
+	    		</form>
+	    	</section>
+	    	
+	    	<section class="info">
+	    		<table>
+					<thead>
+						<tr>
+			                <th>活動類別編號</th>
+			                <th>活動類別名稱</th>
+			                <th>活動類別說明</th>
+			                <th>修改資訊</th>
+			        	</tr>
+		            </thead>
+		            
+		            <tbody>
+		            	<th:block th:each="activityCategoryVO : ${activityCategoryListData}">
+		            		<tr>
+				            	<td th:text="${activityCategoryVO.activityCategoryID}"></td>
+								<td th:text="${activityCategoryVO.activityCategoryName}"></td>
+								<td th:text="${activityCategoryVO.activityCategoryInfo}"></td>
+								<td>
+									<form method="post" th:action="@{/activitycategory/updatePage}">
+									<input type="submit" value="修改" id="update_btn">
+									<input type="hidden" name="activityCategoryID" th:value="${activityCategoryVO.activityCategoryID}">
+									</form>
+								</td>
+		            		</tr>
+		            	</th:block>
+		            </tbody>
+				</table>
+	    	</section>
+	    	
+	    	<!-- <section class="info" th:if="${getAll}">
+	    		嵌入listAllActivityCategory.html中th:fragment="listAllFragment"
+	    		<div th:insert="~{/backend/activitycategory/listAllActivityCategory :: listAllFragment}"></div>
+	    	</section> -->
+	    	
+	    	<!-- <section class="info" th:if="${getOne}">
+	    		嵌入listOneActivityCategory.html中th:fragment="listOneFragment"
+	    		<div th:insert="~{/backend/activitycategory/listOneActivityCategory :: listOneFragment}"></div>
+	    	</section> -->
+	    </div>
+	    </div>
+	    </div>
+	<th:block th:insert="~{/backend/htmlfile/content2}"/>
+    <th:block th:insert="~{/backend/htmlfile/script}"/>
+
+</body>
+</html>

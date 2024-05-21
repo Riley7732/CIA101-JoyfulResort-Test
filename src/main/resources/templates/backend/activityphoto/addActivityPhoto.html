@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<base th:href="@{/}">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>活動圖片管理系統</title>
+	<link th:insert="~{/backend/htmlfile/css.html}"/>
+
+	<style type="text/css">
+		/* 活動類別表單容器 */
+		.update {
+			max-width: auto;
+			margin: 20px auto;
+			background-color: #fff;
+			border-radius: 8px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			padding: 10px;
+			width: 50%;
+		}
+		
+		/* 標題樣式 */
+		.update h4 {
+			font-size: 20px;
+			margin-bottom: 10px;
+			text-align: center;
+		}
+		
+		/* 表單元素樣式 */
+		.update form {
+			width: 80%;
+			max-width: 500px;
+			margin: auto;
+		}
+		
+		/* 表單中的文本框和文本區域 */
+		.update form input[type="text"], .update form textarea {
+			width: 100%;
+			padding: 8px;
+			margin-bottom: 10px;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			box-sizing: border-box;
+		}
+		
+		/* 錯誤訊息樣式 */
+		.error {
+			color: red;
+			font-size: 12px;
+		}
+		
+		#submit_btn, #cancel_btn {
+			padding: 5px 10px;
+			background-color: #9cb6d2;
+			color: #fff;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			white-space: nowrap; /* 讓文字不換行 */
+			margin-top: 10px; /* 設定向下的上邊距 */
+			text-decoration: none; /* 取消連結的下劃線 */
+		}
+		
+		#submit, #cancel_btn {
+			display: inline-block;
+		}
+		
+		#submit_btn:hover, #cancel_btn:hover {
+			background-color: #0056b3; /* 滑鼠指向某一行時，這行的背景顏色會改變。 */
+		}
+		
+		#btn_set {
+			text-align: right; /* 讓內容向右對齊 */
+			margin-top: 10px; /* 這是為了確保與表格之間有一些間距 */
+		}
+		
+		#blob_holder {
+		    margin-top: 5px; /* 上邊距 */
+		}
+		
+		#blob_holder img {
+		    width: 200px; /* 圖片寬度 */
+		    height: 175px; /* 圖片高度 */
+		    border: 2px solid #ccc; /* 圖片邊框 */
+		    border-radius: 4px; /* 圖片圓角 */
+		    margin-top: 10px; /* 圖片與上方元素的間距 */
+		}
+		
+		#blob_holder div {
+		    text-align: left; /* 文字左對齊 */
+		    margin-top: 10px; /* 上邊距 */
+		    font-size: 14px; /* 文字大小 */
+		    color: red; /* 文字顏色 */
+		}
+	</style>
+
+</head>
+<body>
+	<th:block th:insert="~{/backend/htmlfile/content1}"/>
+    	<div class="container-fluid pt-4 px-4">
+        <div class="bg-light rounded">
+		<div class="G3_content">
+			<section class="update">
+				<h4>新增活動圖片</h4>
+				<form th:action="@{/activityphoto/insert}" method="post" th:object="${activityPhotoVO}" enctype="multipart/form-data">
+					<div>
+						<label>活動名稱</label>
+	
+						<select th:field="*{activityVO.activityID}">
+							<option th:each="activityVO : ${activityListData}" th:value="${activityVO.activityID}" th:text="${activityVO.activityName}" />
+						</select>
+					</div>
+					
+					<div>
+						<label>活動圖片</label><br>
+						<span class="error" th:utext="${errorMessage}" id="upFiles.errors">${errorMessage}</span>
+						<input type="file" th:field="*{activityPhoto}" onclick="previewImage()" multiple="multiple" onchange="hideContent('upFiles.errors');" />
+						<div id="blob_holder"></div>
+					</div>
+					
+					<div id="btn_set">
+						<div id="submit">
+							<button type="submit" id="submit_btn"> 新增 </button>
+						</div>
+						
+						<a th:href="@{/activityphoto/activityphoto}" id="cancel_btn">取消</a>
+					</div>
+				</form>
+			</section>
+	    </div>
+	    </div>
+	    </div>
+	<th:block th:insert="~{/backend/htmlfile/content2}"/>
+    <th:block th:insert="~{/backend/htmlfile/script}"/>
+	
+	<!-- JavaScript part -->
+	<script type="text/javascript">
+	//清除提示信息
+	function hideContent(d) {
+	     document.getElementById(d).style.display = "none";
+	}
+	
+	//照片上傳-預覽用
+	var filereader_support = typeof FileReader != 'undefined';
+	if (!filereader_support) {
+		alert("No FileReader support");
+	}
+	acceptedTypes = {
+			'image/png' : true,
+			'image/jpeg' : true,
+			'image/gif' : true
+	};
+	function previewImage() {
+		var upfile1 = document.getElementById("activityPhoto");
+		upfile1.addEventListener("change", function(event) {
+			var files = event.target.files || event.dataTransfer.files;
+			for (var i = 0; i < files.length; i++) {
+				previewfile(files[i])
+			}
+		}, false);
+	}
+	function previewfile(file) {
+		if (filereader_support === true && acceptedTypes[file.type] === true) {
+			var reader = new FileReader();
+			reader.onload = function(event) {
+				var image = new Image();
+				image.src = event.target.result;
+				image.width = 100;
+				image.height = 75;
+				image.border = 2;
+				if (blob_holder.hasChildNodes()) {
+					blob_holder.removeChild(blob_holder.childNodes[0]);
+				}
+				blob_holder.appendChild(image);
+			};
+			reader.readAsDataURL(file);
+			document.getElementById('submit').disabled = false;
+		} else {
+			blob_holder.innerHTML = "<div  style='text-align: left;'>" + "● filename: " + file.name
+					+ "<br>" + "● ContentTyp: " + file.type
+					+ "<br>" + "● size: " + file.size + "bytes"
+					+ "<br>" + "● 上傳ContentType限制: <b> <font color=red>image/png、image/jpeg、image/gif </font></b></div>";
+			document.getElementById('submit').disabled = true;
+		}
+	}
+	</script>
+
+</body>
+</html>

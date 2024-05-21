@@ -1,0 +1,53 @@
+ 
+
+
+
+ /* 新增和更新的登入表單樣式 */
+        .login-form {
+            background-color: #ffebbb; /* 白色背景 */
+            padding: 40px; /* 內距增加 */
+            border-radius: 10px; /* 圓角設計 */
+            width: 450px; /* 固定寬度 */
+            margin: auto; /* 水平居中 */
+            position: relative; /* 絕對定位基準 */
+            top: 50%; /* 垂直居中 */
+            transform: translateY(10%); /* 垂直居中的調整 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 盒子陰影 */
+        }
+        .login-form h2 {
+            text-align: center; /* 標題文字居中 */
+            margin-bottom: 30px; /* 標題下方間距 */
+        }
+        .login-form input {
+            border: 1px solid #ddd; /* 輸入框邊框 */
+            border-radius: 4px; /* 輸入框圓角 */
+            margin-bottom: 20px; /* 輸入框間距 */
+            padding: 15px; /* 輸入框內距 */
+            width: calc(100% - 10px); /* 輸入框寬度 */
+        }
+        .login-form input[type="submit"] {
+            background-color: #4CAF50; /* 提交按鈕顏色 */
+            color: white; /* 提交按鈕文字顏色 */
+            cursor: pointer; /* 滑鼠指標變化 */
+            border: none; /* 移除邊框 */
+        }
+        .login-form .links a {
+            color: #333; /* 連結顏色 */
+            text-decoration: none; /* 移除下劃線 */
+            font-size: 14px; /* 字體大小 */
+        }
+        .login-form .links a:hover {
+            text-decoration: underline; /* 滑鼠經過時添加下劃線 */
+        }
+        /* 確保CSS只作用於登入表單內的元素 */
+        .login-form label,
+        .login-form input,
+        .login-form .links {
+            display: block; /* 使元素占滿整行 */
+        }
+        /* 置底連結樣式 */
+        .login-form .bottom-link {
+            text-align: center; /* 文字居中 */
+            margin-top: 20px; /* 距離上方元素的間距 */
+        }
+ 

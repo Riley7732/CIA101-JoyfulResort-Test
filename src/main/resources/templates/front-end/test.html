@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<base th:href="@{/}">
+<head>
+<meta charset="UTF-8">
+<title>My Page</title>
+<link th:insert="~{/front-end/htmlfile/css.html}" />
+
+
+</head>
+
+<body class="main-layout">
+
+
+	<th:block link th:insert="~{/front-end/htmlfile/content1.html}" />
+	<div th:fragment="content">
+
+		<div class="news-section">
+			<div class="container">
+				<!-- 東西從這裡放 -->
+				<div class="about">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-md-5">
+								<div class="titlepage">
+									<h2>最新消息</h2>
+									<p>123123123</p>
+									<a class="read_more" href=" ">觀看全文</a>
+								</div>
+							</div>
+							<div class="col-md-7">
+								<div class="about_img">
+									<figure>
+										<img th:src="@{/frontend/images/about.png}" alt="#" />
+									</figure>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 關於我們區域結束 -->
+
+				<!-- 最新消息 -->
+				<div class="news-section">
+					<div class="container">
+						<h2>最新消息</h2>
+						<!-- 新聞項目 -->
+						<div class="news-item">
+							<img th:src="@{/frontend/path-to-your-image.jpg}"
+								alt="news image">
+							<div class="news-content">
+								<h3>新聞標題一</h3>
+								<p class="date">2024.04.15 - 2024.12.31</p>
+								<p>這裡是關於新聞標題一的簡要內容，點擊查看全文。</p>
+								<a href="link-to-full-article.html" class="read-more">觀看全文</a>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+
+
+
+
+
+
+			</div>
+		</div>
+	</div>
+
+	<th:block link th:insert="~{/front-end/htmlfile/content2.html}" />
+	<th:block link th:insert="~{/front-end/htmlfile/script.html}" />
+</body>
+
+</html>

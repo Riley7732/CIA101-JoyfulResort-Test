@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<base th:href="@{/}">
+<head>
+    <meta charset="UTF-8">
+    <title>Joyfulresort 後臺首頁</title>
+    <link th:insert="~{/backend/htmlfile/css.html}"/>
+    
+</head>
+<body>
+    <th:block th:insert="~{/backend/htmlfile/content1}"/>
+    <div class="container-fluid pt-4 px-4">
+        <div class="bg-light rounded">
+            <div class="G3_content">
+                我是內容
+            </div>
+        </div>
+    </div>
+    <th:block th:insert="~{/backend/htmlfile/content2}"/>
+    <th:block th:insert="~{/backend/htmlfile/script}"/>
+</body>
+</html>
