@@ -5,115 +5,214 @@
 	<meta charset='utf-8' />
 	<title>My Page</title>
 	<link th:insert="~{/front-end/htmlfile/css.html}" />
-	<script src='/frontend/js/index.global.js'></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	
 	<style>
 	
-	body {
-		margin: 40px 10px;
-		padding: 0;
-		font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
-		font-size: 14px;
-	}
-	
-	#calendar {
-		max-width: 1100px;
-		margin: 0 auto;
-	}
-	  
-	#submit_btn {
-		padding: 5px 10px;
-		background-color: #9cb6d2;
-		color: #fff;
-		border: none;
-		border-radius: 4px;
-		cursor: pointer;
-		white-space: nowrap; /* 讓文字不換行 */
-		margin-bottom: 10px; /* 設定向下的上邊距 */
-		text-decoration: none; /* 取消連結的下劃線 */
-	 }
+		.activity {
+			margin: 20px auto;
+			background-color: #f4f4f4;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			margin-bottom: 20px;
+			padding: 10px;
+			background-color: #fff;
+			border-radius: 5px;
+			display: flex; /* 使用 Flexbox 布局 */
+			align-items: center; /* 對齊內容至中 */
+		}
 		
-	#submit_btn:hover {
-		background-color: #0056b3; /* 滑鼠指向某一行時，這行的背景顏色會改變。 */
-	}
-	  
-	#btn_set {
-		text-align: right; /* 讓內容向右對齊 */
-		margin-top: 10px; /* 這是為了確保與表格之間有一些間距 */
-	}
-	  
-	  /* 活動類別表單容器 */
-	.insert {
-		max-width: auto;
-		margin: 20px auto;
-		background-color: #fff;
-		border-radius: 8px;
-		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-		padding: 10px;
-		width: 50%;
-	}
-	
-	/* 標題樣式 */
-	.insert h4 {
-		font-size: 20px;
-		margin-bottom: 10px;
-		text-align: center;
-	}
-	
-	/* 表單元素樣式 */
-	.insert form {
-		width: 80%;
-		max-width: 500px;
-		margin: auto;
-	}
-	
-	/* 表單中的文本框和文本區域 */
-	.insert form input[type="text"], .insert form textarea {
-		width: 100%;
-		padding: 8px;
-		margin-bottom: 10px;
-		border: 1px solid #ccc;
-		border-radius: 4px;
-		box-sizing: border-box;
-	}
-	
-	/* 錯誤訊息樣式 */
-	.error {
-		color: red;
-		font-size: 12px;
-	}
+		#box {
+			max-width: auto;
+			margin: 20px auto;
+			background-color: #fff;
+			border-radius: 8px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			padding: 10px;
+			width: 100%;
+		}
+		
+		.activity h2 {
+			margin-top: 0;
+		}
+		
+		.activity-photo {
+			width: 300px;
+			margin: 10px;
+		}
+		
+		.activity-image {
+			flex: 0 0 auto; /* 不伸縮，保持原大小 */
+			margin-right: 10px; /* 提供一些間距 */
+			width: 100%; /* 限制圖片寬度為30% */
+			height: auto; /* 自動計算高度，保持圖片比例 */
+			max-height: 250px; /* 限制圖片的最大高度為100像素 */
+			margin-left: 10px; /* 提供一些間距 */
+			border-radius: 4px;
+			object-fit: cover; /* 保持圖片比例，填滿容器 */
+		}
+		
+		.activity-info {
+			flex: 1; /* 自動填充剩餘空間 */
+		}
+		
+		#notice{
+			margin: 0px;
+			padding: 0px;
+		}
+		p {
+			margin: 0px;
+			padding: 0px;
+		}
+		
+		#participate_btn, #session_btn {
+			padding: 5px 10px;
+			background-color: #007bff;
+			color: #fff;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			margin-left: auto; /* 將按鈕推到右側 */
+		}
+		
+		#participate_btn:hover, #session_btn:hover {
+			background-color: #0056b3;
+		}
+		
+		#participate, #session {
+			display: inline-block;
+		}
+		
+		#login {
+			padding: 5px 10px;
+			background-color: #007bff;
+			color: #fff;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			margin-left: auto; /* 將按鈕推到右側 */
+		}
+		
+		#login:hover {
+			background-color: #0056b3;
+		}
+		
+		#btn_set {
+			text-align: right; /* 讓內容向右對齊 */
+			margin-top: 10px; /* 這是為了確保與表格之間有一些間距 */
+		}
+		
+		#calendar {
+			max-width: 1000px;
+			margin: 0 auto;
+		}
+		
+		table.fc-col-header {
+			width: auto;
+		}
+		
+		fc-scrollgrid-sync-table {
+			width: auto;
+		}
+		.fc .fc-scrollgrid, .fc .fc-scrollgrid table {
+		    table-layout: fixed;
+		    width: 100%
+		}
 	
 	</style>
 </head>
 <body>
 	<th:block link th:insert="~{/front-end/htmlfile/content1.html}" />
-		<div th:fragment="content">
-			<div class="news-section">
-				<div class="container">
-				
-					<div id="btn_set">
-						<form method="post" th:action="@{/activityorder/addOrder}">
-		    				<input type="submit" id="submit_btn" value="我要報名">
+		<div th:fragment="content" class="G3content">
+		
+			<div class="container mt-5">
+			    <nav style="--bs-breadcrumb-divider: '----'; font-size: smaller;" aria-label="breadcrumb">
+			        <ol class="breadcrumb justify-content-center">
+			            <li class="breadcrumb-item google-icon"><a th:href="@{/}" style="color: #847674; font-size: smaller;"><svg
+			                    xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="24"
+			                    style="margin-top: -5px;">
+			                <path
+			                        d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z" />
+			            </svg>首頁</a></li>
+			            <li class="breadcrumb-item"><a th:href="@{/activityinfo}" style="color: #847674; font-size: smaller;">活動類別</a>
+			            <li class="breadcrumb-item"><a th:href="@{/joyfulactivity}" style="color: #847674; font-size: smaller;">活動</a>
+			            </li>
+			        </ol>
+			        
+			        <h2 class="text-center p-0 lora-type m-0" style="color: #847674;">ACTIVITY</h2>
+	        		<p class="text-center h5 mb-5 fw-bold">活動介紹</p>
+			        
+			        <div style="text-align: center;">
+			        	<form method="post" th:action="@{/activity/listCategory}">
+			        	<label>活動類別：</label>
+		    			<select name="activityCategoryID">
+		    				<option value="0">全部
+		    				<option th:each="activityCategoryVO : ${activityCategoryListData}" th:value="${activityCategoryVO.activityCategoryID}" th:text="${activityCategoryVO.activityCategoryName}" />
+		    			</select>
+		    			<input type="submit" id="queryone_btn" value="查詢" >
 		    			</form>
-		    		</div>
-				
-	  				<div id='calendar'></div>
-	  				
-	  				<section class="insert">
-		  				<div>
-							<label>選擇場次：</label><br>
-			    			<select id="activitySessionID">
-			    				<option value="">請選擇活動
-			    				<option th:each="activitySession : ${activitySessionList}" th:value="${activitySession.activitySessionID}" th:text="${activitySession.activitySessionID + ' - ' + activitySession.activityVO.activityName + ' - ' + activitySession.activityDate}" />
-			    			</select><br>
-			    			<!-- <span>報名人數剩 <input id="leftTotal"> 人</span> -->
-							<span id="leftTotalSpan">(報名人數剩 <span id="leftTotal"></span> 人)</span>
-		    			</div>
-	    			</section>
-	  				
-	  			</div>
+			        </div>
+			        
+			    </nav>
 			</div>
+			
+			<div class="container">
+		        <!-- <h4>活動介紹：</h4> -->
+		        
+		        <div th:each="activityVO, i : ${activityListData}" class="activity">
+		            <div class="activity-info">
+		                <h3 th:text="${activityVO.activityName}"></h3>
+		                <p th:text="${activityVO.activityInfo}"></p>
+		                <br>
+		                <span>活動價格： NTD </span><span th:text="${activityVO.activityPrice}"></span>
+		                <hr>
+		                <div>
+		                	<h6 id="notice">*注意事項</h6>
+		                	<p>1. 戶外活動若遇雨天，活動取消</p>
+		                	<p>2. 活動舉辦3天前取消可全額退費；3天內則不退費。</p>
+		                	<p>3. 活動時段分為上午(0900-1100)跟下午(1400-1600)</p>
+		                </div>
+		                
+		            </div>
+		            <div th:each="activityPhotoVO, j : ${activityPhotoListData}" th:if="${i.index == j.index}" class="activity-photo">
+		            	<img th:src="@{/activityphoto/DBGifReader} + '?activityPhotoID=' + ${activityPhotoVO.activityPhotoID}" alt="活動圖片" class="activity-image">
+	            	</div>
+	            </div>
+	            
+				<!-- Modal -->
+				<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-xl">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">活動場次</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+						        <div id="box">
+						        	<div id='calendar'></div>
+						        </div>
+							</div>
+						</div>
+					</div>
+				</div>
+	            
+	            <div id="btn_set">
+	            	<div id="session">
+		            	<button type="button" id="session_btn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+							瀏覽活動場次
+						</button>
+	            	</div>
+					<div id="participate">
+		            	<form method="post" th:action="@{/activityorder/addOrder}">
+		            		<button id="participate_btn">我要報名</button>
+		            	</form>
+
+		            </div>
+	            </div>
+	            
+	            
+	            
+		    </div>
+				
 		</div>
 
 	<th:block link th:insert="~{/front-end/htmlfile/content2.html}" />
@@ -122,120 +221,7 @@
 	
 	<script>
 	
-	  document.addEventListener('DOMContentLoaded', function() {
-	    var calendarEl = document.getElementById('calendar');
-	    var eventList = [];
-	    var eventId;
-	    var eventName;
-	    var eventDate;
-	    var total;
-	    var event;
-	    var eventTime;
-	    
-	    $.post({
-		    url: '/activitysession/listSchedule',
-		    success: function(data) {
-		    	console.log(data);
-		    	
-		      	data.forEach(function(obj){
-		      		
-		      		eventId = obj.asID;
-		      		//console.log(eventId);
-		      		eventName = obj.asName;
-		            //console.log(eventName);
-		            eventDate = obj.asDate;
-		            //console.log(eventDate);
-		            total = (parseInt(obj.asMax) - parseInt(obj.asTotal));
-		            
-		            eventTime = parseInt(obj.asTime);
-		            // console.log(eventTime);
-		            
-		            // 根據 eventTime 的值确定場次時間
-		            var timeDescription = eventTime === 0 ? '0900-1100' : '1400-1600';
-	
-		            // 從後端獲取的資料以FullCalendar的形式儲存
-		            event = {
-		            	groupId: eventId,
-		                title: eventName + ' 剩' + total + '位 (' + timeDescription + ')',
-		                start: eventDate,
-		                backgroundColor: 'transparent',
-		                borderColor: 'transparent',
-		                textColor: 'black'
-		            };
-		            // console.log(event);
-	
-		            eventList.push(event);
-		            
-		         	// 在成功獲取資料後初始化FullCalendar，資料才會顯示在月曆上
-		            initFullCalendar();
-		      	});
-		    },
-		    error: function(jqXHR, textStatus, errorThrown) {
-		      console.error('Error fetching events:', textStatus, errorThrown);
-		    }
-	  	});
-	    
-	    // console.log(eventList);
-	    
-	    function initFullCalendar() {
-			// 獲取當天日期
-		    var today = new Date();
-		    
-		    // 計算當天起往後兩個月的日期
-		    var twoMonthsLater = new Date(today);
-		    twoMonthsLater.setMonth(today.getMonth() + 2);
-		    
-		 	// 計算當天起往後三天
-		    var threeDays = new Date(today);
-		    threeDays.setDate(today.getDate() + 3);
-		    // console.log(threeDays);
-		    
-		    // 格式化日期為 YYYY-MM-DD
-		    function formatDate(date) {
-		      var d = new Date(date),
-		          month = '' + (d.getMonth() + 1),
-		          day = '' + d.getDate(),
-		          year = d.getFullYear();
-		      
-		      if (month.length < 2) month = '0' + month;
-		      if (day.length < 2) day = '0' + day;
-		      
-		      return [year, month, day].join('-');
-		    }
-		
-		    var calendar = new FullCalendar.Calendar(calendarEl, {
-		      headerToolbar: {
-		        left: 'prev,next today',
-		        center: 'title',
-		        right: 'dayGridMonth'
-		      },
-		      initialDate: formatDate(today), // 設置初始日期為今天
-		      validRange: {
-		        start: formatDate(threeDays),
-		        end: formatDate(twoMonthsLater)
-		      },
-		      navLinks: true, // can click day/week names to navigate views
-		      selectable: true,	// 滑鼠點選日期會有背景色
-		      selectMirror: true,
-		      select: function(arg) {
-		    	  var selectedDate = new Date(arg.start.getTime() - arg.start.getTimezoneOffset() * 60000)
-					                     .toISOString()
-					                     .split('T')[0];
-		          console.log(selectedDate);
-		          $.post({
-		            url: '/activitysession/schedule',
-		            data: { date: selectedDate },
-		          });
-		          calendar.unselect();
-		      },
-		      editable: false,  // 能不能移動活動
-		      dayMaxEvents: true, // 超出格子點日期會有視窗把全部活動顯示出來
-		      events: eventList,
-		    });
-		
-		    calendar.render();
-	    }
-	  });
+	 
 	
 	</script>
 

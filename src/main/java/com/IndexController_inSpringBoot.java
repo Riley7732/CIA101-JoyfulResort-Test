@@ -74,6 +74,11 @@ public class IndexController_inSpringBoot {
 		return "front-end/joyfulresortactivity/participate";
 	}
 	
+	@GetMapping("/orderdetails")
+	public String orderDetails(Model model) {
+		return "front-end/joyfulresortactivity/orderdetails";
+	}
+	
 	
 	// ============================== ============================== ============================== //
 	

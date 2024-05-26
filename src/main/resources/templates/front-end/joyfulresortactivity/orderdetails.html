@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<base th:href="@{/}">
+<head>
+	<meta charset="UTF-8">
+	<title>活動一覽 Activity</title>
+	<link th:insert="~{/front-end/htmlfile/css.html}" />
+	<style type="text/css">
+	
+		.details {
+			max-width: auto;
+			margin: 20px auto;
+			background-color: #fff;
+			border-radius: 8px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			padding: 10px;
+			width: 40%;
+		}
+		
+		/* 標題樣式 */
+		.details h4 {
+			font-size: 20px;
+			margin-bottom: 10px;
+			text-align: center;
+		}
+		
+		.insert {
+			max-width: auto;
+			margin: 20px auto;
+			background-color: #fff;
+			border-radius: 8px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			padding: 10px;
+			width: 40%;
+		}
+		
+		/* 標題樣式 */
+		.insert h4 {
+			font-size: 20px;
+			margin-bottom: 10px;
+			text-align: center;
+		}
+		
+		/* 表單元素樣式 */
+		.insert form {
+			width: 80%;
+			max-width: 500px;
+			margin: auto;
+		}
+		
+		/* 表單中的文本框和文本區域 */
+		.insert input[type="text"] {
+			width: 100%;
+			padding: 8px;
+			margin-bottom: 10px;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			box-sizing: border-box;
+		}
+		
+		#submit_btn, #cancel_btn {
+			padding: 5px 10px;
+			background-color: #9cb6d2;
+			color: #fff;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			white-space: nowrap; /* 讓文字不換行 */
+			margin-top: 10px; /* 設定向下的上邊距 */
+			text-decoration: none; /* 取消連結的下劃線 */
+		}
+		
+		#submit, #cancel_btn {
+			display: inline-block;
+		}
+		
+		#submit_btn:hover, #cancel_btn:hover {
+			background-color: #0056b3; /* 滑鼠指向某一行時，這行的背景顏色會改變。 */
+		}
+		
+		#btn_set {
+			text-align: right; /* 讓內容向右對齊 */
+			margin-top: 10px; /* 這是為了確保與表格之間有一些間距 */
+		}
+	
+	</style>
+</head>
+<body class="main-layout">
+	<th:block link th:insert="~{/front-end/htmlfile/content1.html}" />
+	</section>
+	</header>
+		<div th:fragment="content" class="G3content">
+			<div class="container-fluid pt-4 px-4">
+	        <div class="bg-light rounded">
+			<div class="G3_content">
+		        
+		        <section class="details">
+		        	<h4>訂單名細：</h4>
+		        	
+<!-- 		        	<div> -->
+<!-- 						<label>會員：</label> -->
+<!-- 						<p th:text="${activityOrderVO.memberID}"></p> -->
+<!-- 	    			</div> -->
+		        	
+		        	<div>
+						<label>訂單編號：</label>
+						<span th:text="${activityOrderVO.activityOrderID}"></span>
+	    			</div>
+		        	
+		        	<div>
+						<label>活動場次：</label>
+						<span th:text="${activityOrderVO.activitySessionVO.activitySessionID}"></span>
+	    			</div>
+		        	
+		        	<div>
+						<label>報名人數：</label>
+						<span th:text="${activityOrderVO.enteredNumber}"></span>
+	    			</div>
+	    			
+	    			<div>
+						<label>訂單金額：</label>
+						<span th:text="${activityOrderVO.orderAmount}"></span>
+	    			</div>
+	    			
+	    			<div>
+						<label>訂單日期：</label>
+						<span th:text="${activityOrderVO.orderTime}"></span>
+					</div>
+					
+					<div>
+						<label>訂單備註：</label>
+						<span th:text="${activityOrderVO.orderNote}"></span>
+					</div>
+		        		           	
+	            </section>
+	            
+	            <section class="insert">
+	            
+	            	<h4>信用卡付款資訊：</h4>
+	            
+	            	<div>
+						<label>信用卡持有人姓名</label><br>
+						<input type="text">
+					</div>
+					
+					<div>
+						<label>信用卡號</label><br>
+						<input type="text">
+					</div>
+	            
+	            	<div id="btn_set">
+						<div id="submit">
+							<button type="submit" id="submit_btn"> 付款 </button>
+						</div>
+					</div>
+	            	
+	            </section>
+	            
+		    </div>
+		    </div>
+		    </div>	
+		</div>
+
+	<th:block link th:insert="~{/front-end/htmlfile/content2.html}" />
+	<th:block link th:insert="~{/front-end/htmlfile/script.html}" />
+
+	<script>
+	
+	<!-- 放JS -->
+    
+	</script>
+	
+</body>
+</html>

@@ -174,17 +174,29 @@ public class ActivitySessionController {
 	}
 	
 	@PostMapping("schedule")
-	public String participate(@RequestParam("date") String date, ModelMap model) {
-
+	public void participate(@RequestParam("date") String date, ModelMap model, HttpServletRequest req, HttpServletResponse res) throws IOException {
+		res.setContentType("application/json; charset=UTF-8");
+		
 		System.out.println(date);
 		List<ActivitySessionVO> list = asSvc.getAllByDate(Date.valueOf(date));
 		model.addAttribute("activitySessionList", list);
+		
+		JSONArray jsonArray = new JSONArray();
 		for (ActivitySessionVO as : list) {
 			System.out.println(as.getActivityVO().getActivityName());
+			int ID = as.getActivitySessionID();
+			String Name = as.getActivityVO().getActivityName();
+			
+			JSONObject sch = new JSONObject();
+			sch.put("ID", ID);
+			sch.put("Name", Name);
+			
+			jsonArray.put(sch);
 		}
+		PrintWriter out = res.getWriter();
+	    out.print(jsonArray.toString()); // 将JSONArray作为响应发送到客户端
+	    out.flush();
 		
-		
-		return "front-end/joyfulresortactivity/joyfulactivity";
 	}
 
 }

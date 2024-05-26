@@ -6,8 +6,22 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>活動報名</title>
 	<link th:insert="~{/front-end/htmlfile/css.html}" />
+	<script src='/frontend/js/index.global.js'></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 	<style type="text/css">
+		
+		body {
+			margin: 40px 10px;
+			padding: 0;
+			font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+			font-size: 14px;
+		}
+		
+		#calendar {
+			max-width: 1100px;
+			margin: 0 auto;
+		}
 		/* 活動類別表單容器 */
 		.insert {
 			max-width: auto;
@@ -16,7 +30,7 @@
 			border-radius: 8px;
 			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 			padding: 10px;
-			width: 50%;
+			width: 100%;
 		}
 		
 		/* 標題樣式 */
@@ -82,19 +96,19 @@
         <div class="bg-light rounded">
 		<div class="G3_content">
 			<section class="insert">
+				<div id='calendar'></div>
+				<hr>
 				<h4>活動報名</h4>
-				<form th:action="@{/activityorder/insert}" method="post" th:object="${activityOrderVO}" enctype="multipart/form-data">
+				<form th:action="@{/activityorder/insertOrder}" method="post" th:object="${activityOrderVO}" enctype="multipart/form-data">
 					<div class="errorblock" th:utext="${errorMessage}" style="color: red">${errorMessage}</div>
-
+					
 					<div>
-						<label>選擇場次：</label><br>
-		    			<select th:field="*{activitySessionVO.activitySessionID}" id="activitySessionID">
-		    				<option value="">請選擇活動
-		    				<option th:if="${activitySessionVO.activityEnteredStatus == 1}" th:each="activitySessionVO : ${activitySessionListData}" th:value="${activitySessionVO.activitySessionID}" th:text="${activitySessionVO.activitySessionID + ' - ' + activitySessionVO.activityVO.activityName + ' - ' + activitySessionVO.activityDate}" />
-		    			</select><br>
-		    			<!-- <span>報名人數剩 <input id="leftTotal"> 人</span> -->
-						<span id="leftTotalSpan">(報名人數剩 <span id="leftTotal"></span> 人)</span>
-	    			</div>
+				        <label>選擇場次：</label><br>
+				        <select id="activitySessionID" name="activitySessionVO.activitySessionID">
+				            <option value="">請選擇活動</option>
+				        </select><br>
+				        <span id="leftTotalSpan">(報名人數剩 <span id="leftTotal"></span> 人)</span>
+				    </div>
 					
 					<div>
 						<label>活動報名人數</label>
@@ -166,6 +180,143 @@
 		function hideContent(d) {
 		     document.getElementById(d).style.display = "none";
 		}
+		
+		document.addEventListener('DOMContentLoaded', function() {
+		    var calendarEl = document.getElementById('calendar');
+		    var eventList = [];
+		    var eventId;
+		    var eventName;
+		    var eventDate;
+		    var total;
+		    var event;
+		    var eventTime;
+		    
+		    $.post({
+			    url: '/activitysession/listSchedule',
+			    success: function(data) {
+			    	console.log(data);
+			    	
+			      	data.forEach(function(obj){
+			      		
+			      		eventId = obj.asID;
+			      		//console.log(eventId);
+			      		eventName = obj.asName;
+			            //console.log(eventName);
+			            eventDate = obj.asDate;
+			            //console.log(eventDate);
+			            total = (parseInt(obj.asMax) - parseInt(obj.asTotal));
+			            
+			            eventTime = parseInt(obj.asTime);
+			            // console.log(eventTime);
+			            
+			            // 根據 eventTime 的值确定場次時間
+			            var timeDescription = eventTime === 0 ? '0900-1100' : '1400-1600';
+		
+			            // 從後端獲取的資料以FullCalendar的形式儲存
+			            event = {
+			            	groupId: eventId,
+			                title: eventName + ' 剩' + total + '位 (' + timeDescription + ')',
+			                start: eventDate,
+			                backgroundColor: 'transparent',
+			                borderColor: 'transparent',
+			                textColor: 'black'
+			            };
+			            // console.log(event);
+		
+			            eventList.push(event);
+			            
+			         	// 在成功獲取資料後初始化FullCalendar，資料才會顯示在月曆上
+			            initFullCalendar();
+			      	});
+			    },
+			    error: function(jqXHR, textStatus, errorThrown) {
+			      console.error('Error fetching events:', textStatus, errorThrown);
+			    }
+		  	});
+		    
+		    // console.log(eventList);
+		    
+		    function initFullCalendar() {
+				// 獲取當天日期
+			    var today = new Date();
+			    
+			    // 計算當天起往後兩個月的日期
+			    var twoMonthsLater = new Date(today);
+			    twoMonthsLater.setMonth(today.getMonth() + 2);
+			    
+			 	// 計算當天起往後三天
+			    var threeDays = new Date(today);
+			    threeDays.setDate(today.getDate() + 3);
+			    // console.log(threeDays);
+			    
+			    // 格式化日期為 YYYY-MM-DD
+			    function formatDate(date) {
+			      var d = new Date(date),
+			          month = '' + (d.getMonth() + 1),
+			          day = '' + d.getDate(),
+			          year = d.getFullYear();
+			      
+			      if (month.length < 2) month = '0' + month;
+			      if (day.length < 2) day = '0' + day;
+			      
+			      return [year, month, day].join('-');
+			    }
+			
+			    var calendar = new FullCalendar.Calendar(calendarEl, {
+			      headerToolbar: {
+			        left: 'prev,next today',
+			        center: 'title',
+			        right: 'dayGridMonth'
+			      },
+			      initialDate: formatDate(today), // 設置初始日期為今天
+			      validRange: {
+			        start: formatDate(threeDays),
+			        end: formatDate(twoMonthsLater)
+			      },
+			      navLinks: true, // can click day/week names to navigate views
+			      selectable: true,	// 滑鼠點選日期會有背景色
+			      selectMirror: true,
+			      select: function(arg) {
+			    	  var selectedDate = new Date(arg.start.getTime() - arg.start.getTimezoneOffset() * 60000)
+						                     .toISOString()
+						                     .split('T')[0];
+			          console.log(selectedDate);
+			          $.post({
+			            url: '/activitysession/schedule',
+			            data: { date: selectedDate },
+			            success: function(data) {
+			            	console.log(data);
+			            	populateActivitySessions(data);
+			            }
+			          });
+			          calendar.unselect();
+			      },
+			      editable: false,  // 能不能移動活動
+			      dayMaxEvents: true, // 超出格子點日期會有視窗把全部活動顯示出來
+			      events: eventList,
+			    });
+			
+			    calendar.render();
+		    }
+		  });
+		  
+		  function populateActivitySessions(data) {
+			    var select = $('#activitySessionID');
+			    var leftTotalSpan = $('#leftTotalSpan');
+
+			    // 清空当前的选项
+			    select.empty();
+			    select.append('<option value="">請選擇活動</option>');
+
+			    // 填充新的选项
+			    data.forEach(function(activitySession) {
+			        var optionText = activitySession.ID + ' - ' + activitySession.Name;
+			        var option = $('<option></option>')
+			            .val(activitySession.ID)
+			            .text(optionText);
+			        select.append(option);
+			    });
+			}
 
 		
 		// 綁定change事件來獲得場次編號及報名人數，取得金額

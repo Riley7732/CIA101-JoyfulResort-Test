@@ -248,7 +248,7 @@ public class ActivityOrderController {
 		List<ActivityOrderVO> list = aoSvc.getAll();
 		model.addAttribute("activityOrderListData", list);
 		
-		return "backend/activityorder/listOneActivityOrder";
+		return "front-end/joyfulresortactivity/orderdetails";
 	}
 
 }
