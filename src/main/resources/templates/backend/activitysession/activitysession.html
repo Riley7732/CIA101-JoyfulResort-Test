@@ -157,7 +157,7 @@
 	    	</section>
 	    	
 	    	<section class="info">
-	    		<h6>活動場次(當天場次或上架)</h6>
+	    		<h6>活動場次(當天場次)</h6>
 	    		<table>
 					<thead>
 						<tr>
@@ -181,9 +181,9 @@
 		            	<th:block th:each="activitySessionVO : ${activitySessionListData}">
 		            	
 		            	<!-- 只顯示當天場次 -->
-                        <!-- <th:block th:if="${#dates.format(activitySessionVO.activityDate, 'yyyy-MM-dd') == #dates.format(#calendars.createNow(), 'yyyy-MM-dd')}"> -->
-		            	<!-- 只顯示上架場次 -->
-		            	<th:block th:if="${activitySessionVO.activitySessionStatus} == true or ${#dates.format(activitySessionVO.activityDate, 'yyyy-MM-dd') == #dates.format(#calendars.createNow(), 'yyyy-MM-dd')}">
+                        <th:block th:if="${#dates.format(activitySessionVO.activityDate, 'yyyy-MM-dd') == #dates.format(#calendars.createNow(), 'yyyy-MM-dd')}">
+		            	<!-- 只顯示上架場次and當天場次 -->
+		            	<!-- <th:block th:if="${activitySessionVO.activitySessionStatus} == true or ${#dates.format(activitySessionVO.activityDate, 'yyyy-MM-dd') == #dates.format(#calendars.createNow(), 'yyyy-MM-dd')}"> -->
 		            		<tr>
 				            	<td th:text="${activitySessionVO.activitySessionID}"></td>
 				            	<td th:text="${activitySessionVO.activityVO.activityID} + ' - [' + ${activitySessionVO.activityVO.activityName} + ']' "></td>

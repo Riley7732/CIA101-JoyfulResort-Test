@@ -6,6 +6,7 @@
 	<title>My Page</title>
 	<link th:insert="~{/front-end/htmlfile/css.html}" />
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src='/frontend/js/index.global.js'></script>
 	
 	<style>
 	
@@ -219,10 +220,128 @@
 	<th:block link th:insert="~{/front-end/htmlfile/script.html}" />
 	
 	
+	<script th:src="@{/backend/js/jquery-3.4.1.min.js}"></script>
+	<script src='/backend/js/index.global.js'></script>
 	<script>
 	
-	 
-	
+		$("#login").click(function(){
+			alert("請先登入");
+			$("#LoginButton").click()
+		})
+		
+		document.addEventListener('DOMContentLoaded', function() {
+			
+		    var calendarEl = document.getElementById('calendar');
+		    var eventList = [];
+		    var eventId;
+		    var eventName;
+		    var eventDate;
+		    var total;
+		    var event;
+		    var eventTime;
+		    
+		    $.post({
+			    url: '/activitysession/listSchedule',
+			    success: function(data) {
+			    	console.log(data);
+			    	
+			      	data.forEach(function(obj){
+			      		
+			      		eventId = obj.asID;
+			      		//console.log(eventId);
+			      		eventName = obj.asName;
+			            //console.log(eventName);
+			            eventDate = obj.asDate;
+			            //console.log(eventDate);
+			            total = (parseInt(obj.asMax) - parseInt(obj.asTotal));
+			            
+			            eventTime = parseInt(obj.asTime);
+			            // console.log(eventTime);
+			            
+			            // 根據 eventTime 的值确定場次時間
+			            var timeDescription = eventTime === 0 ? '上午' : '下午';
+		
+			            // 從後端獲取的資料以FullCalendar的形式儲存
+			            event = {
+			            	groupId: eventId,
+			                title: eventName + ' (' + timeDescription + ') 剩' + total,
+			                start: eventDate,
+			                backgroundColor: 'transparent',
+			                borderColor: 'transparent',
+			                textColor: 'black'
+			            };
+			            // console.log(event);
+		
+			            eventList.push(event);
+			            
+			         	// 在成功獲取資料後初始化FullCalendar，資料才會顯示在月曆上
+			            $('#exampleModal').on('shown.bs.modal', function(){
+			            	initFullCalendar();
+			            });
+			         	
+			      	});
+			    },
+			    error: function(jqXHR, textStatus, errorThrown) {
+			    	console.error('Error fetching events:', textStatus, errorThrown);
+			    }
+			    
+			    
+		  	});
+		    
+		    // console.log(eventList);
+		    
+		    function initFullCalendar() {
+				// 獲取當天日期
+				var today = new Date();
+			    
+			    // 計算當天起往後兩個月的日期
+			    var twoMonthsLater = new Date(today);
+			    twoMonthsLater.setMonth(today.getMonth() + 2);
+			    
+			 	// 計算當天起往後三天
+			    var threeDays = new Date(today);
+			    threeDays.setDate(today.getDate() + 3);
+			    // console.log(threeDays);
+			    
+			    // 格式化日期為 YYYY-MM-DD
+			    function formatDate(date) {
+			    	var d = new Date(date),
+					month = '' + (d.getMonth() + 1),
+					day = '' + d.getDate(),
+					year = d.getFullYear();
+			      
+					if (month.length < 2) month = '0' + month;
+					if (day.length < 2) day = '0' + day;
+			      
+			      	return [year, month, day].join('-');
+			    }
+			
+			    var calendar = new FullCalendar.Calendar(calendarEl, {
+			    	height: 'auto', // 或者指定具體的高度
+					headerToolbar: {
+						left: 'prev,next today',
+						center: 'title',
+						right: 'dayGridMonth'
+					},
+					initialDate: formatDate(today), // 設置初始日期為今天
+					validRange: {
+				        start: formatDate(threeDays),
+				        end: formatDate(twoMonthsLater)
+					},
+					navLinks: true, // can click day/week names to navigate views
+					selectable: true,	// 滑鼠點選日期會有背景色
+					selectMirror: true,
+					
+					editable: false,  // 能不能移動活動
+					dayMaxEvents: true, // 超出格子點日期會有視窗把全部活動顯示出來
+					events: eventList,
+					});
+			
+			    calendar.render();
+			}
+		
+		});
+    
 	</script>
 
 </body>

@@ -36,5 +36,9 @@ public class ActivityPhotoService {
 	public List<ActivityPhotoVO> getPhotoByActivity(Integer activityID){
 		return repository.findByActivity(activityID);
 	}
+	
+	public List<ActivityPhotoVO> getPhotoByActivityCategory(Integer activityCategoryID){
+		return repository.findByActivityCategory(activityCategoryID);
+	}
 
 }

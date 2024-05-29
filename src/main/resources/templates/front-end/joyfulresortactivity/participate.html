@@ -3,14 +3,12 @@
 <base th:href="@{/}">
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>活動報名</title>
 	<link th:insert="~{/front-end/htmlfile/css.html}" />
-	<script src='/frontend/js/index.global.js'></script>
+	<script src='/backend/js/index.global.js'></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 	<style type="text/css">
-		
+
 		body {
 			margin: 40px 10px;
 			padding: 0;
@@ -22,7 +20,7 @@
 			max-width: 1100px;
 			margin: 0 auto;
 		}
-		/* 活動類別表單容器 */
+		
 		.insert {
 			max-width: auto;
 			margin: 20px auto;
@@ -30,10 +28,9 @@
 			border-radius: 8px;
 			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 			padding: 10px;
-			width: 100%;
+			width: 75%;
 		}
 		
-		/* 標題樣式 */
 		.insert h4 {
 			font-size: 20px;
 			margin-bottom: 10px;
@@ -87,24 +84,40 @@
 			text-align: right; /* 讓內容向右對齊 */
 			margin-top: 10px; /* 這是為了確保與表格之間有一些間距 */
 		}
+		
+		.error {
+            color: red;
+            display: none;
+        }
 	</style>
-
 </head>
-<body>
+<body class="main-layout">
 	<th:block link th:insert="~{/front-end/htmlfile/content1.html}" />
-    	<div class="container-fluid pt-4 px-4">
-        <div class="bg-light rounded">
-		<div class="G3_content">
+	</section>
+	</header>
+		<div th:fragment="content" class="G3content">
+			
 			<section class="insert">
+				<h4>請選擇活動日期</h4>
 				<div id='calendar'></div>
 				<hr>
 				<h4>活動報名</h4>
-				<form th:action="@{/activityorder/insertOrder}" method="post" th:object="${activityOrderVO}" enctype="multipart/form-data">
-					<div class="errorblock" th:utext="${errorMessage}" style="color: red">${errorMessage}</div>
+				<form th:action="@{/activityorder/insertOrder}" method="post" th:object="${activityOrderVO}" enctype="multipart/form-data" onsubmit="return validateForm()">
+
+<!-- 					<div> -->
+<!-- 						<label>會員編號</label><br> -->
+<!-- 						<input type="text" th:field="*{memberVO.memberId}" readonly> -->
+<!-- 					</div> -->
+					
+<!-- 					<div> -->
+<!-- 						<label>會員：</label> -->
+<!-- 						<span th:text="${memberVO.memberName}"></span> -->
+<!-- 	    			</div> -->
 					
 					<div>
-				        <label>選擇場次：</label><br>
-				        <select id="activitySessionID" name="activitySessionVO.activitySessionID">
+				        <label>選擇場次</label>
+				        <span id="activitySessionIDError" class="error">請選擇活動場次</span><br>
+				        <select id="activitySessionID" name="activitySessionVO.activitySessionID" onchange="hideError('activitySessionIDError')">
 				            <option value="">請選擇活動</option>
 				        </select><br>
 				        <span id="leftTotalSpan">(報名人數剩 <span id="leftTotal"></span> 人)</span>
@@ -112,33 +125,17 @@
 					
 					<div>
 						<label>活動報名人數</label>
-						<span th:if="${#fields.hasErrors('enteredNumber')}" th:errors="*{enteredNumber}" class="error" id="enteredNumber.errors"></span><br>
-						<select th:field="*{enteredNumber}" id="enteredNumber" onclick="hideContent('enteredNumber.errors');">
+						<span id="enteredNumberError" class="error">請選擇報名人數</span><br>
+						<select th:field="*{enteredNumber}" id="enteredNumber" onchange="hideError('enteredNumberError')">
 						    <option value="">請選擇</option>
 						    <option th:each="num : ${#numbers.sequence(1,20)}" th:value="${num}" th:text="${num}"></option>
 						</select>
 					</div>
 					
-					<!-- <div>
-						<label>會員</label><br>
-						<input type="text" th:value="${member}" readonly>
-					</div> -->
-					
 					<div>
-						<label>訂單金額</label>
-						<span th:if="${#fields.hasErrors('orderAmount')}" th:errors="*{orderAmount}" class="error" id="orderAmount.errors"></span><br>
+						<label>訂單金額</label><br>
 						<input type="text" th:field="*{orderAmount}" id="orderAmount" readonly>
 					</div>
-					
-<!-- 					<div> -->
-<!-- 						<label>訂單狀態</label><br> -->
-<!-- 						<select  th:field="*{orderStatus}"> -->
-<!-- 							<option value="0">訂單成立</option> -->
-<!-- 							<option value="1">已付款</option> -->
-<!-- 							<option value="2">訂單取消中</option> -->
-<!-- 							<option value="3">已取消</option> -->
-<!-- 						</select> -->
-<!-- 					</div> -->
 					
 					<div>
 						<label>訂單日期</label><br>
@@ -150,15 +147,6 @@
 						<textarea th:field="*{orderNote}"></textarea>
 					</div>
 					
-<!-- 					<div> -->
-<!-- 						<label>退款狀態</label><br> -->
-<!-- 						<select  th:field="*{refundStatus}"> -->
-<!-- 							<option value="0">無退款</option> -->
-<!-- 							<option value="1">退款中</option> -->
-<!-- 							<option value="2">完成退款</option> -->
-<!-- 						</select> -->
-<!-- 					</div> -->
-					
 					<div id="btn_set">
 						<div id="submit">
 							<button type="submit" id="submit_btn"> 報名 </button>
@@ -168,18 +156,40 @@
 					</div>
 				</form>
 			</section>
-	    </div>
-	    </div>
-	    </div>
+		
+		</div>
+
 	<th:block link th:insert="~{/front-end/htmlfile/content2.html}" />
 	<th:block link th:insert="~{/front-end/htmlfile/script.html}" />
-	
+
 	<script th:src="@{/backend/js/jquery-3.4.1.min.js}"></script>
 	<script type="text/javascript">
-		//清除提示信息
-		function hideContent(d) {
-		     document.getElementById(d).style.display = "none";
-		}
+	
+		// 隱藏錯誤信息
+	    function hideError(elementId) {
+	        document.getElementById(elementId).style.display = 'none';
+	    }
+	
+	    // 驗證
+	    function validateForm() {
+	        var isValid = true;
+	
+	        // 驗證 activitySessionID
+	        var activitySessionID = document.getElementById('activitySessionID').value;
+	        if (!activitySessionID) {
+	            document.getElementById('activitySessionIDError').style.display = 'inline';
+	            isValid = false;
+	        }
+	
+	        // 驗證 enteredNumber
+	        var enteredNumber = document.getElementById('enteredNumber').value;
+	        if (!enteredNumber) {
+	            document.getElementById('enteredNumberError').style.display = 'inline';
+	            isValid = false;
+	        }
+	
+	        return isValid; // 如果 isValid 為 true，提交表單；false則不會提交表單
+	    }
 		
 		document.addEventListener('DOMContentLoaded', function() {
 		    var calendarEl = document.getElementById('calendar');
@@ -204,18 +214,18 @@
 			            //console.log(eventName);
 			            eventDate = obj.asDate;
 			            //console.log(eventDate);
-			            total = (parseInt(obj.asMax) - parseInt(obj.asTotal));
+			            //total = (parseInt(obj.asMax) - parseInt(obj.asTotal));
 			            
 			            eventTime = parseInt(obj.asTime);
 			            // console.log(eventTime);
 			            
 			            // 根據 eventTime 的值确定場次時間
-			            var timeDescription = eventTime === 0 ? '0900-1100' : '1400-1600';
+			            var timeDescription = eventTime === 0 ? '上午 0900-1100' : '下午 1400-1600';
 		
 			            // 從後端獲取的資料以FullCalendar的形式儲存
 			            event = {
 			            	groupId: eventId,
-			                title: eventName + ' 剩' + total + '位 (' + timeDescription + ')',
+			                title: eventId + ' - ' +eventName + ' (' + timeDescription + ')',
 			                start: eventDate,
 			                backgroundColor: 'transparent',
 			                borderColor: 'transparent',
@@ -238,7 +248,7 @@
 		    
 		    function initFullCalendar() {
 				// 獲取當天日期
-			    var today = new Date();
+				var today = new Date();
 			    
 			    // 計算當天起往後兩個月的日期
 			    var twoMonthsLater = new Date(today);
@@ -251,123 +261,121 @@
 			    
 			    // 格式化日期為 YYYY-MM-DD
 			    function formatDate(date) {
-			      var d = new Date(date),
-			          month = '' + (d.getMonth() + 1),
-			          day = '' + d.getDate(),
-			          year = d.getFullYear();
+			    	var d = new Date(date),
+					month = '' + (d.getMonth() + 1),
+					day = '' + d.getDate(),
+					year = d.getFullYear();
 			      
-			      if (month.length < 2) month = '0' + month;
-			      if (day.length < 2) day = '0' + day;
+					if (month.length < 2) month = '0' + month;
+					if (day.length < 2) day = '0' + day;
 			      
-			      return [year, month, day].join('-');
+			      	return [year, month, day].join('-');
 			    }
 			
 			    var calendar = new FullCalendar.Calendar(calendarEl, {
-			      headerToolbar: {
-			        left: 'prev,next today',
-			        center: 'title',
-			        right: 'dayGridMonth'
-			      },
-			      initialDate: formatDate(today), // 設置初始日期為今天
-			      validRange: {
-			        start: formatDate(threeDays),
-			        end: formatDate(twoMonthsLater)
-			      },
-			      navLinks: true, // can click day/week names to navigate views
-			      selectable: true,	// 滑鼠點選日期會有背景色
-			      selectMirror: true,
-			      select: function(arg) {
-			    	  var selectedDate = new Date(arg.start.getTime() - arg.start.getTimezoneOffset() * 60000)
-						                     .toISOString()
-						                     .split('T')[0];
-			          console.log(selectedDate);
-			          $.post({
-			            url: '/activitysession/schedule',
-			            data: { date: selectedDate },
-			            success: function(data) {
-			            	console.log(data);
-			            	populateActivitySessions(data);
-			            }
-			          });
-			          calendar.unselect();
-			      },
-			      editable: false,  // 能不能移動活動
-			      dayMaxEvents: true, // 超出格子點日期會有視窗把全部活動顯示出來
-			      events: eventList,
-			    });
+					headerToolbar: {
+						left: 'prev,next today',
+						center: 'title',
+						right: 'dayGridMonth'
+					},
+					initialDate: formatDate(today), // 設置初始日期為今天
+					validRange: {
+				        start: formatDate(threeDays),
+				        end: formatDate(twoMonthsLater)
+					},
+					navLinks: true, // can click day/week names to navigate views
+					selectable: true,	// 滑鼠點選日期會有背景色
+					selectMirror: true,
+					select: function(arg) {
+					   	var selectedDate = new Date(arg.start.getTime() - arg.start.getTimezoneOffset() * 60000)
+							                   .toISOString()
+							                   .split('T')[0];
+						console.log(selectedDate);
+						$.post({
+							url: '/activitysession/schedule',
+							data: { date: selectedDate },
+							success: function(data) {
+								console.log(data);
+								populateActivitySessions(data);
+						}
+					});
+					calendar.unselect();
+		      	},
+				editable: false,  // 能不能移動活動
+				dayMaxEvents: true, // 超出格子點日期會有視窗把全部活動顯示出來
+				events: eventList,
+				});
 			
 			    calendar.render();
-		    }
-		  });
-		  
-		  function populateActivitySessions(data) {
-			    var select = $('#activitySessionID');
-			    var leftTotalSpan = $('#leftTotalSpan');
-
-			    // 清空当前的选项
-			    select.empty();
-			    select.append('<option value="">請選擇活動</option>');
-
-			    // 填充新的选项
-			    data.forEach(function(activitySession) {
-			        var optionText = activitySession.ID + ' - ' + activitySession.Name;
-			        var option = $('<option></option>')
-			            .val(activitySession.ID)
-			            .text(optionText);
-			        select.append(option);
-			    });
 			}
+		});
+	  
+	function populateActivitySessions(data) {
+		var select = $('#activitySessionID');
+		var leftTotalSpan = $('#leftTotalSpan');
+	
+		// 清空当前的选项
+		select.empty();
+		select.append('<option value="">請選擇活動</option>');
+	
+		// 填充新的选项
+		data.forEach(function(activitySession) {
+		    var optionText = activitySession.ID + ' - ' + activitySession.Name;
+		    var option = $('<option></option>')
+		        .val(activitySession.ID)
+		        .text(optionText);
+		    select.append(option);
+		});
+	}
 
 		
-		// 綁定change事件來獲得場次編號及報名人數，取得金額
-		$('#activitySessionID, #enteredNumber').change(function(){
-			
-			// 取得html取得場次編號
-			let asID = $('#activitySessionID').val();
-			console.log(asID);
-			//輸入報名人數取得enteredNumber值
-			let enteredNum = $('#enteredNumber').val();
-			console.log(enteredNum);
-			// 用AJAX把資料傳送到後端
-			$.post({
-			url:'/activityorder/getActivityPrice',
-			data:{
-				"activitySessionID" : asID,
-				"enteredNumber" : enteredNum
-			},
-			dataType:'json',
-			// 接收後端的資料
-			success:function(data){
-				console.log(data);
-				$('#orderAmount').val(data.activityPrice);
-			}
-			})
-		});
+	// 綁定change事件來獲得場次編號及報名人數，取得金額
+	$('#activitySessionID, #enteredNumber').change(function(){
+		
+		// 取得html取得場次編號
+		let asID = $('#activitySessionID').val();
+		console.log(asID);
+		//輸入報名人數取得enteredNumber值
+		let enteredNum = $('#enteredNumber').val();
+		console.log(enteredNum);
+		// 用AJAX把資料傳送到後端
+		$.post({
+		url:'/activityorder/getActivityPrice',
+		data:{
+			"activitySessionID" : asID,
+			"enteredNumber" : enteredNum
+		},
+		dataType:'json',
+		// 接收後端的資料
+		success:function(data){
+			console.log(data);
+			$('#orderAmount').val(data.activityPrice);
+		}
+		})
+	});
 
-		// 綁定change事件來獲得場次編號，取得剩餘報名人數
-		$('#activitySessionID').change(function(){
+	// 綁定change事件來獲得場次編號，取得剩餘報名人數
+	$('#activitySessionID').change(function(){
 
-			let asID = $('#activitySessionID').val();
-			console.log(asID);
+		let asID = $('#activitySessionID').val();
+		console.log(asID);
 
-			$.post({
-			url:'/activityorder/getLeftTotal',
-			data:{
-				"activitySessionID" : asID
-			},
-			dataType:'json',
-			// 接收後端的資料
-			success:function(data){
-				console.log(data);
-// 				$('#leftTotal').val(data.leftTotal);
-				$('#leftTotal').text(data.leftTotal); // 更新 <span> 中的文字內容
-			}
-			})
+		$.post({
+		url:'/activityorder/getLeftTotal',
+		data:{
+			"activitySessionID" : asID
+		},
+		dataType:'json',
+		// 接收後端的資料
+		success:function(data){
+			console.log(data);
+			$('#leftTotal').text(data.leftTotal); // 更新 <span> 中的文字內容
+		}
+		})
 
-		});
-
+	});
 		
 	</script>
-
+	
 </body>
 </html>

@@ -44,10 +44,10 @@ public class IndexController_inSpringBoot {
 	}
 	
 	// ======================================== 前台首頁 ======================================== //
-		@GetMapping("/front_main_page")
-		public String frontMainPage(Model model) {
-			return "front-end/test";
-		}
+	@GetMapping("/front_main_page")
+	public String frontMainPage(Model model) {
+		return "front-end/test";
+	}
 	
 	// ======================================== 後台首頁 ======================================== //
 	@GetMapping("/main_page")

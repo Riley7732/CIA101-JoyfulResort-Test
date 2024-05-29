@@ -11,5 +11,9 @@ public interface ActivityPhotoRepository extends JpaRepository<ActivityPhotoVO, 
 	@Transactional
 	@Query(value = "SELECT * from activity_photo where activity_id =?1", nativeQuery = true)
 	List<ActivityPhotoVO> findByActivity(Integer activityID);
+	
+	@Transactional
+	@Query(value = "SELECT * from activity_photo ap JOIN activity a on ap.activity_id = a.activity_id where activity_category_id =?1", nativeQuery = true)
+	List<ActivityPhotoVO> findByActivityCategory(Integer activityCategoryID);
 
 }
